@@ -14,8 +14,8 @@ def home():
 
 @app.route("/login")
 def login():
-    client_id = os.getenv("9021115667")        # ✅ Reads from .env variable CLIENT_ID
-    api_key = os.getenv("6R2647876651#k*JK859036`Nn464937")            # ✅ Reads from .env variable API_KEY
+    client_id = os.getenv("ICICI_CLIENT_ID")   # ✅ Correct variable name
+    api_key = os.getenv("ICICI_API_KEY")       # ✅ Correct variable name
     redirect_uri = "https://nirved-sampatti.onrender.com/callback"
     response_type = "code"
     state = "nirved_secure_sampatti"
@@ -30,7 +30,6 @@ def login():
     )
 
     return redirect(login_url)
-
 
 # Callback route to receive authorization code from ICICI Direct
 @app.route("/callback", methods=["GET"])
