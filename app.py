@@ -12,6 +12,3 @@ def callback():
     if code:
         return f"Authorization Code: {code}"
     return "Authorization code not found", 400
-
-if __name__ == "__main__":
-    app.run()
