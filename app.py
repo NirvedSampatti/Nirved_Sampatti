@@ -1,36 +1,34 @@
-from flask import Flask, request, redirect  # ✅ Import Flask and necessary modules
+from flask import Flask, request, redirect
 
-app = Flask(__name__)  # ✅ Define the Flask app object
+app = Flask(__name__)  # ✅ Correct Flask app initialization
 
-# Home route
 @app.route("/")
 def home():
-    return "Nirved Sampatti Flask App is Running"
+    return "Welcome to Nirved Sampatti!"
 
-# Login route to initiate ICICI Direct OAuth flow
 @app.route("/login")
 def login():
-    client_id = "9021115667"  # 🔐 <-- Replace with your ICICI client ID 
-    redirect_uri = "https://nirvedsampatti.onrender.com/callback"  # ✅ <-- Your actual Render URL
+    client_id = "9021115667"  # ✅ Your ICICI client ID
+    redirect_uri = "https://nirvedsampatti.onrender.com/callback"
     response_type = "code"
-    state = "nirved_secure_sampatti"
+    state = "nirved_secure_sampatti"  # ✅ Custom state string
 
     login_url = (
-        f"https://api.icicidirect.com/apiuser/login"
-        f"?client_id={client_id}"
-        f"&redirect_uri={redirect_uri}"
-        f"&response_type={response_type}"
-        f"&state={state}"
+        f"https://api.icicidirect.com/apiuser/login?"
+        f"client_id={client_id}&"
+        f"redirect_uri={redirect_uri}&"
+        f"response_type={response_type}&"
+        f"state={state}"
     )
+
     return redirect(login_url)
 
-# Callback route to receive authorization code from ICICI Direct
-@app.route("/callback", methods=["GET", "POST"])
+@app.route("/callback")
 def callback():
-    code = request.args.get("code") or request.form.get("code")
-    if code:
-        return f"Authorization Code: {code}"
-    return "Authorization code not found", 400
+    code = request.args.get("code")
+    state = request.args.get("state")
+
+    return f"Authorization code: {code}, State: {state}"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
