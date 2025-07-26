@@ -2,9 +2,7 @@ import os
 from flask import Flask, request, redirect
 
 app = Flask(__name__)
-
-# Load secret key from .env for session and app security
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = os.getenv("SECRET_KEY")  # ✅ Recommended
 
 @app.route("/")
 def home():
@@ -12,11 +10,9 @@ def home():
 
 @app.route("/login")
 def login():
-    # ✅ Load credentials from environment
     client_id = os.getenv("ICICI_CLIENT_ID")
     api_key = os.getenv("ICICI_API_KEY")
-    
-    # 🔍 Error if environment variables are missing
+
     if not client_id or not api_key:
         return "Missing ICICI_CLIENT_ID or ICICI_API_KEY in environment variables", 500
 
@@ -25,7 +21,7 @@ def login():
     state = "nirved_secure_sampatti"
 
     login_url = (
-        "https://api.icicidirect.com/apiuser/login"
+        f"https://api.icicidirect.com/apiuser/login"
         f"?client_id={client_id}"
         f"&redirect_uri={redirect_uri}"
         f"&response_type={response_type}"
@@ -41,9 +37,9 @@ def callback():
     state = request.args.get("state")
 
     if code:
-        return f"✅ Authorization Code: {code}<br>State: {state}"
+        return f"Authorization Code: {code}, State: {state}"
     else:
-        return "❌ Authorization code not found", 400
+        return "Authorization code not found", 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=True)
