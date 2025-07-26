@@ -10,7 +10,7 @@ def home():
 # Login route to initiate ICICI Direct OAuth flow
 @app.route("/login")
 def login():
-    client_id = "My Client ID"  # 🔐 <-- Replace with your ICICI client ID 
+    client_id = "9021115667"  # 🔐 <-- Replace with your ICICI client ID 
     redirect_uri = "https://nirvedsampatti.onrender.com/callback"  # ✅ <-- Your actual Render URL
     response_type = "code"
     state = "nirved_secure_sampatti"  # You can change this to any string 
