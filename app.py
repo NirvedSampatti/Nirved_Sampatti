@@ -37,10 +37,10 @@ def login():
 @app.route("/callback", methods=["GET"])
 def callback():
     code = request.args.get("code")
-    state = request.args.get("state")
+    state = request.args.get("state")  # might be None
 
     if code:
-        return f"Authorization Code: {code}, State: {state}"
+        return f"Authorization Code: {code}, State: {state if state else 'No state parameter received'}"
     else:
         return "Authorization code not found", 400
 
