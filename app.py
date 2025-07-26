@@ -12,10 +12,11 @@ app = Flask(__name__)
 def home():
     return "Nirved Sampatti Flask App is Running"
 
+# Login route to initiate ICICI Direct OAuth flow
 @app.route("/login")
 def login():
-    client_id = os.getenv("ICICI_CLIENT_ID")   # ✅ Correct variable name
-    api_key = os.getenv("ICICI_API_KEY")       # ✅ Correct variable name
+    client_id = os.getenv("ICICI_CLIENT_ID")   # ✅ Reads from .env variable
+    api_key = os.getenv("ICICI_API_KEY")       # ✅ Reads from .env variable
     redirect_uri = "https://nirved-sampatti.onrender.com/callback"
     response_type = "code"
     state = "nirved_secure_sampatti"
