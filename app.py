@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Welcome to Nirved Sampatti!"
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
+    code = request.args.get("code") or request.form.get("code")
+    if code:
+        return f"Authorization Code: {code}"
+    return "Authorization code not found", 400
