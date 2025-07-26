@@ -20,14 +20,13 @@ def login():
     response_type = "code"
     state = "nirved_secure_sampatti"
 
-    login_url = (
-        f"https://api.icicidirect.com/apiuser/login"
-        f"?client_id={client_id}"
-        f"&redirect_uri={redirect_uri}"
-        f"&response_type={response_type}"
-        f"&state={state}"
-        f"&api_key={api_key}"
-    )
+ login_url = (
+    f"https://api.icicidirect.com/apiuser/login"
+    f"?client_id={client_id}"
+    f"&redirect_uri={redirect_uri}"
+    f"&response_type=code"
+    f"&state={state}"
+)
 
     return redirect(login_url)
 
