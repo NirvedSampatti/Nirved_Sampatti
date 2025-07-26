@@ -1,7 +1,3 @@
-from flask import Flask, request, redirect
-
-app = Flask(__name__)
-
 # Home route
 @app.route("/")
 def home():
@@ -34,4 +30,3 @@ def callback():
 
 if __name__ == "__main__":
     app.run()
-
