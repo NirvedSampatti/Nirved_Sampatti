@@ -1,9 +1,9 @@
 import os
+import urllib.parse
 from flask import Flask, request, redirect
-from urllib.parse import urlencode
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY", "dev_secret_key_for_testing")  # fallback for dev only
+app.secret_key = os.getenv("SECRET_KEY")  # Recommended for security
 
 @app.route("/")
 def home():
@@ -17,18 +17,24 @@ def login():
     if not client_id or not api_key:
         return "Missing ICICI_CLIENT_ID or ICICI_API_KEY in environment variables", 500
 
-    params = {
-        "client_id": client_id,
-        "redirect_uri": "https://nirved-sampatti.onrender.com/callback",
-        "response_type": "code",
-        "state": "nirved_secure_sampatti",
-        "api_key": api_key
-    }
+    redirect_uri = "https://nirved-sampatti.onrender.com/callback"
+    redirect_uri_encoded = urllib.parse.quote(redirect_uri, safe='')
 
-    login_url = "https://api.icicidirect.com/apiuser/login?" + urlencode(params)
+    response_type = "code"
+    state = "nirved_secure_sampatti"
+
+    login_url = (
+        f"https://api.icicidirect.com/apiuser/login"
+        f"?client_id={client_id}"
+        f"&redirect_uri={redirect_uri_encoded}"
+        f"&response_type={response_type}"
+        f"&state={state}"
+        f"&api_key={api_key}"
+    )
+
     return redirect(login_url)
 
-@app.route("/callback")
+@app.route("/callback", methods=["GET"])
 def callback():
     code = request.args.get("code")
     state = request.args.get("state")
