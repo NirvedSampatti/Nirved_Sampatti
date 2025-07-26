@@ -4,7 +4,4 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Welcome to Nirved Sampatti! 🚀"
-
-if __name__ == "__main__":
-    app.run()
+    return "Welcome to Nirved Sampatti – Trading App Redirect Handler"
