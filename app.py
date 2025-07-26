@@ -1,3 +1,7 @@
+from flask import Flask, request, redirect  # ✅ Import Flask and necessary modules
+
+app = Flask(__name__)  # ✅ Define the Flask app object
+
 # Home route
 @app.route("/")
 def home():
@@ -9,7 +13,7 @@ def login():
     client_id = "9021115667"  # 🔐 <-- Replace with your ICICI client ID 
     redirect_uri = "https://nirvedsampatti.onrender.com/callback"  # ✅ <-- Your actual Render URL
     response_type = "code"
-    state = "nirved_secure_sampatti"  # You can change this to any string 
+    state = "nirved_secure_sampatti"
 
     login_url = (
         f"https://api.icicidirect.com/apiuser/login"
