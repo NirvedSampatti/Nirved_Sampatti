@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, redirect
+from urllib.parse import urlencode
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")  # ✅ Recommended
+app.secret_key = os.getenv("SECRET_KEY", "dev_secret_key_for_testing")  # fallback for dev only
 
 @app.route("/")
 def home():
@@ -16,22 +17,18 @@ def login():
     if not client_id or not api_key:
         return "Missing ICICI_CLIENT_ID or ICICI_API_KEY in environment variables", 500
 
-    redirect_uri = "https://nirved-sampatti.onrender.com/callback"
-    response_type = "code"
-    state = "nirved_secure_sampatti"
+    params = {
+        "client_id": client_id,
+        "redirect_uri": "https://nirved-sampatti.onrender.com/callback",
+        "response_type": "code",
+        "state": "nirved_secure_sampatti",
+        "api_key": api_key
+    }
 
-    login_url = (
-        f"https://api.icicidirect.com/apiuser/login"
-        f"?client_id={client_id}"
-        f"&redirect_uri={redirect_uri}"
-        f"&response_type={response_type}"
-        f"&state={state}"
-        f"&api_key={api_key}"
-    )
-
+    login_url = "https://api.icicidirect.com/apiuser/login?" + urlencode(params)
     return redirect(login_url)
 
-@app.route("/callback", methods=["GET"])
+@app.route("/callback")
 def callback():
     code = request.args.get("code")
     state = request.args.get("state")
@@ -42,4 +39,4 @@ def callback():
         return "Authorization code not found", 400
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
