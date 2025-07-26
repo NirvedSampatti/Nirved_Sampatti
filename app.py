@@ -1,5 +1,9 @@
 import os
 from flask import Flask, request, redirect
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -11,11 +15,10 @@ def home():
 # Login route to initiate ICICI Direct OAuth flow
 @app.route("/login")
 def login():
-    client_id = "9021115667"  # 🔐 Replace with your actual ICICI client ID
-    api_key = os.getenv("6R2647876651#k*JK859036`Nn464937")  # 🔐 Your ICICI API key from environment variables
-    redirect_uri = "https://nirved-sampatti.onrender.com/callback"  # ✅ Match this with your ICICI developer portal
+    client_id = os.getenv("9021115667")       # 🔐 Your ICICI client ID
+    redirect_uri = "https://nirved-sampatti.onrender.com/callback"
     response_type = "code"
-    state = "nirved_secure_sampatti"  # Can be any string you use for tracking
+    state = "nirved_secure_sampatti"
 
     login_url = (
         f"https://api.icicidirect.com/apiuser/login"
@@ -23,8 +26,8 @@ def login():
         f"&redirect_uri={redirect_uri}"
         f"&response_type={response_type}"
         f"&state={state}"
-        f"&api_key={api_key}"  # <-- Added API key here
     )
+
     return redirect(login_url)
 
 # Callback route to receive authorization code from ICICI Direct
